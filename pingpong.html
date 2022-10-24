@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PingPong</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script type="text/javascript" src="script.js"></script>
+</head>
+<body>
+    <div class="navbar">
+        <div class="container">
+            <a class="logo" href="index.html">Simple<span>Gaming</span></a>
+
+            <img id="mobile-cta" class="mobile-menu" src="images/menu.svg" alt="Open Navigation">
+
+            <nav>
+                <img id="mobile-exit" class="mobile-menu-exit" src="images/exit.svg" alt="Close Navigation">
+                
+                <ul class="primary-nav">
+                    <!-- <li class="current"><a href="#">Home</a></li>
+                    <li><a href="#">Features</a></li>
+                    <li><a href="#">Pricing</a></li> -->
+                </ul>
+
+                <ul class="secondary-nav">
+                    <!-- <li><a href="#">Contact</a></li>
+                    <li class="go-premium-cta"><a href="#">Go Premium</a></li> -->
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    <canvas id="pong" width="600" height="400"></canvas>
+    <script src="pong.js"></script>
+</body>
+
+
+<script>
+var block = document.getElementById("block");
+var hole = document.getElementById("hole");
+var character = document.getElementById("character");
+var jumping = 0;
+var counter = 0;
+
+hole.addEventListener('animationiteration', () => {
+    var random = -((Math.random()*300)+150);
+    hole.style.top = random + "px";
+    counter++;
+});
+setInterval(function(){
+    var characterTop = parseInt(window.getComputedStyle(character).getPropertyValue("top"));
+    if(jumping==0){
+        character.style.top = (characterTop+3)+"px";
+    }
+    var blockLeft = parseInt(window.getComputedStyle(block).getPropertyValue("left"));
+    var holeTop = parseInt(window.getComputedStyle(hole).getPropertyValue("top"));
+    var cTop = -(500-characterTop);
+    if((characterTop>480)||((blockLeft<20)&&(blockLeft>-50)&&((cTop<holeTop)||(cTop>holeTop+130)))){
+        alert("Game over. Score: "+(counter-1));
+        character.style.top = 100 + "px";
+        counter=0;
+    }
+},10);
+
+function jump(){
+    jumping = 1;
+    let jumpCount = 0;
+    var jumpInterval = setInterval(function(){
+        var characterTop = parseInt(window.getComputedStyle(character).getPropertyValue("top"));
+        if((characterTop>6)&&(jumpCount<15)){
+            character.style.top = (characterTop-5)+"px";
+        }
+        if(jumpCount>20){
+            clearInterval(jumpInterval);
+            jumping=0;
+            jumpCount=0;
+        }
+        jumpCount++;
+    },10);
+}
+</script>
+</html>
